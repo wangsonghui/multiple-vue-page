@@ -30,10 +30,22 @@ var webpackConfig = merge(baseWebpackConfig, {
       'process.env': env
     }),
     new webpack.optimize.UglifyJsPlugin({
-      compress: {
+      /*  修改处*/
+     //compress: {
+     //   warnings: false
+     // },
+     // sourceMap: true
+     uglifyOptions: {
+     compress: {
         warnings: false
+        }
       },
-      sourceMap: true
+      sourceMap: config.build.productionSourceMap,
+      parallel: true,
+      include: /.min.js$/
+      
+      
+      
     }),
     // extract css into its own file
     new ExtractTextPlugin({
@@ -85,7 +97,8 @@ var webpackConfig = merge(baseWebpackConfig, {
     }),
     // copy custom static assets
     new CopyWebpackPlugin([{
-      from: path.resolve(__dirname, '../static'),
+      //from: path.resolve(__dirname, '../static'), 此处修改
+       from:path.resolve(__dirname, '../src/assets'),
       to: config.build.assetsSubDirectory,
       ignore: ['.*']
     }])
